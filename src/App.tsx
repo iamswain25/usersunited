@@ -6,7 +6,7 @@ import Join from "./components/Join";
 import User from "./components/User";
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header />
       <Switch>
         <Route path="/" exact component={Threads} />

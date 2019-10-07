@@ -34,9 +34,9 @@ export default () => {
               </div>
             </nav>
             <div className="uu-logo">
-              <a href="/" style={{ textDecoration: "none", color: "black" }}>
+              <Link to="/" style={{ textDecoration: "none", color: "black" }}>
                 <strong>USERS</strong>UNITED
-              </a>
+              </Link>
             </div>
             <div className="mobile-login-btn">
               <span>
