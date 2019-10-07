@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/usersunited/static/css/main.4a874fc2.chunk.css",
+    "main.js": "/usersunited/static/js/main.a0223559.chunk.js",
+    "main.js.map": "/usersunited/static/js/main.a0223559.chunk.js.map",
+    "runtime-main.js": "/usersunited/static/js/runtime-main.689dae1b.js",
+    "runtime-main.js.map": "/usersunited/static/js/runtime-main.689dae1b.js.map",
+    "static/js/2.c4417370.chunk.js": "/usersunited/static/js/2.c4417370.chunk.js",
+    "static/js/2.c4417370.chunk.js.map": "/usersunited/static/js/2.c4417370.chunk.js.map",
+    "index.html": "/usersunited/index.html",
+    "precache-manifest.775c1b338127d8323cddd1e39c47ad36.js": "/usersunited/precache-manifest.775c1b338127d8323cddd1e39c47ad36.js",
+    "service-worker.js": "/usersunited/service-worker.js",
+    "static/css/main.4a874fc2.chunk.css.map": "/usersunited/static/css/main.4a874fc2.chunk.css.map",
+    "static/media/landing.css": "/usersunited/static/media/zuck-light.123eecfa.png",
+    "static/media/all.min.css": "/usersunited/static/media/fa-solid-900.b70cea03.ttf",
+    "static/media/modal.css": "/usersunited/static/media/zuck.26bd6c66.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.689dae1b.js",
+    "static/js/2.c4417370.chunk.js",
+    "static/css/main.4a874fc2.chunk.css",
+    "static/js/main.a0223559.chunk.js"
+  ]
+}
