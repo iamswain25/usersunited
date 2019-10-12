@@ -56,10 +56,10 @@ export default () => {
                 </div>
               </li>
               <li className="menu-btn" id="loginBtn">
-                <a href="join">
+                <Link to="/join">
                   <span>Login</span>
                   <i className="fa fa-lock"></i>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

@@ -7,6 +7,7 @@ import "./css/fa.min.css";
 import "./css/modal.css";
 import "./css/menu.css";
 import "./css/all.min.css";
+import "./css/tabby-ui-vertical.min.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 

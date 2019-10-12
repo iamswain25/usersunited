@@ -1,23 +1,22 @@
 import * as React from "react";
+import Context from "../near/Context";
 import useInterval from "use-interval";
-const EARNING_PER_SECOND = 0.068 / 24 / 60 / 60;
-const ROUNDING = 1000000;
-
-export default (props: { totalUser: number; totalSec: number }) => {
+import { EARNING_PER_SECOND, ROUNDING } from "../near/Near";
+export default () => {
+  const { totalSec, totalUser } = React.useContext(Context);
   const [sum, setSum] = React.useState(0);
-  const [second, setSecond] = React.useState(props.totalSec);
+  const [second, setSecond] = React.useState(totalSec);
   useInterval(() => {
-    setSecond(second + props.totalUser);
+    setSecond(second + totalUser);
     const totalSum =
-      Math.round(
-        (second + 1 + props.totalSec) * EARNING_PER_SECOND * ROUNDING
-      ) / ROUNDING;
+      Math.round((second + 1 + totalSec) * EARNING_PER_SECOND * ROUNDING) /
+      ROUNDING;
     setSum(totalSum);
   }, 1000);
   return (
     <p>
-      We are <strong className="total-boycott-sum">{props.totalUser}</strong>{" "}
-      Users United boycotting Facebook resulting in
+      We are <strong className="total-boycott-sum">{totalUser}</strong> Users
+      United boycotting Facebook resulting in
       <strong className="total-boycott-sum" id="earning-total">
         {` $${sum} `}
       </strong>

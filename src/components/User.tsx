@@ -1,55 +1,43 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import UserAcquisition from "./UserAcquisition";
 import TotalLostRevenue from "./TotalLostRevenue";
 import { RouteComponentProps } from "react-router-dom";
-import Near from "../near/Near";
-const MS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
-const MS_IN_ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-const MS_IN_30_DAYS = 30 * 24 * 60 * 60 * 1000;
+import Charts from "./Charts";
+import { Message } from "../near/Near";
+import Context from "../near/Context";
+import OnePersonCostCounter from "./OnePersonCostCounter";
+import { ROUNDING, EARNING_PER_SECOND } from "../near/Near";
 export default (props: RouteComponentProps) => {
-  const m = {
-    photo: "",
-    name: "swain",
-    id: "iamswain",
-    index: 1,
-    text: "screw you"
-  };
-  const diffDays = 29;
-  const totalCost = 20;
-  const [stat, setStat] = React.useState({
-    last1day: 0,
-    last7day: 0,
-    last30day: 0,
-    totalUser: 0,
-    totalSec: 0
-  });
-  React.useEffect(() => {
-    getRangeMessages();
-  }, []);
-  async function getRangeMessages() {
-    const messages = await Near.methods.getRangeMessages({ start: 0 });
-    const totalUser = messages.length;
-    const totalSec = messages.reduce((acc, cur) => {
-      const logDate = new Date(cur.date);
-      const nowDate = new Date();
-      const diffTime = Math.abs(nowDate.getTime() - logDate.getTime());
-      const diffSecond = Math.ceil(diffTime / 1000);
-      return acc + diffSecond;
-    }, 0);
-    const timeNow = new Date().getTime();
-
-    const last1day = messages.filter(
-      m => timeNow - new Date(m.date).getTime() <= MS_IN_ONE_DAY
-    ).length;
-    const last7day = messages.filter(
-      m => timeNow - new Date(m.date).getTime() <= MS_IN_ONE_WEEK
-    ).length;
-    const last30day = messages.filter(
-      m => timeNow - new Date(m.date).getTime() <= MS_IN_30_DAYS
-    ).length;
-    setStat({ last1day, last7day, last30day, totalUser, totalSec });
+  const { messages } = React.useContext(Context);
+  const { hash } = window.location;
+  const user = React.useMemo(() => {
+    const userNo = Number(hash.substring(1));
+    let user: Message;
+    if (messages.length < 1) {
+      return null;
+    }
+    if (userNo > 0) {
+      user = messages[userNo - 1];
+    } else {
+      user = messages[0];
+    }
+    const logDate = new Date(user.date);
+    const nowDate = new Date();
+    const diffTime = Math.abs(nowDate.getTime() - logDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const totalCost =
+      Math.round((diffTime / 1000) * EARNING_PER_SECOND * ROUNDING) / ROUNDING;
+    return {
+      ...user,
+      totalCost,
+      diffDays,
+      userNo
+    };
+  }, [hash, messages]);
+  if (!user) {
+    return null;
   }
-
   return (
     <>
       <div className="how-it-works">
@@ -86,11 +74,8 @@ export default (props: RouteComponentProps) => {
                 <div className="campaign-avatar">
                   <div className="facebook-logo"></div>
                 </div>
-                <TotalLostRevenue
-                  totalUser={stat.totalUser}
-                  totalSec={stat.totalSec}
-                />
-                <canvas id="myChart"></canvas>
+                <TotalLostRevenue />
+                <Charts />
                 <UserAcquisition />
                 <button onClick={() => props.history.push("/")}>
                   Leaderboard
@@ -101,33 +86,41 @@ export default (props: RouteComponentProps) => {
               <div className="profile-content">
                 <div className="profile-header">
                   <div className="avatar">
-                    <img src={m.photo} alt="img" style={{ width: "inherit" }} />
+                    <img
+                      src={user.photo}
+                      alt="img"
+                      style={{ width: "inherit" }}
+                    />
                   </div>
                   <section>
-                    <h3>{m.name}</h3>
+                    <h3>{user.name}</h3>
                     <a
-                      href="https://facebook.com/{m.id}"
+                      href={`https://facebook.com/${user.id}`}
                       className="url-address"
                     >
-                      https://facebook.com/{m.id}
+                      https://facebook.com/{user.id}
                     </a>
                   </section>
                 </div>
                 <section className="user-stats">
                   <div>
-                    <h3>#{m.index + 1}</h3>
+                    <h3>
+                      <Link to={`/#${user.userNo}`}>#{user.userNo}</Link>
+                    </h3>
                     <span>User Number</span>
                   </div>
                   <div>
-                    <h3>{diffDays}</h3>
+                    <h3>{user.diffDays}</h3>
                     <span>Days Boycotting</span>
                   </div>
                   <div>
-                    <h3>${totalCost}</h3>
+                    <h3>
+                      $<OnePersonCostCounter value={user.totalCost} />
+                    </h3>
                     <span>Boycott Value</span>
                   </div>
                 </section>
-                <p>I am boycotting Facebook until {m.text}</p>
+                <p>I am boycotting Facebook until {user.text}</p>
               </div>
             </div>
           </div>
